@@ -1,3 +1,4 @@
+package vizualizacao;
 //A TrackBug decidiu convidar os estudantes de Programação Orientada a Objetos para desenvolver uma solução digital em Java para o controle de empréstimos. No entanto, algumas especificações devem ser seguidas:
 
 //1 - O projeto deve ser desenvolvido seguindo os princípios de orientação a objetos em sua totalidade.
@@ -22,54 +23,39 @@
 
 
 import java.util.Scanner;
-import java.util.ArrayList;
+import controlador.ControladorEmprestimo;
+import controlador.ControladorEquipamento;
+import controlador.ControladorFuncionario;
+import modelo.Emprestimo;
+import modelo.Equipamento;
+import modelo.Funcionario;
+import java.time.LocalDate;
 
 public class MenuOganizado {
-	static ArrayList<Funcionario> Funcionarios;
-	static ArrayList<Equipamento> Equipamentos;
-	static ArrayList<Emprestimo> Emprestimos;
+	private ControladorEmprestimo emprestimoController = new ControladorEmprestimo();
+	private ControladorEquipamento equipamentoController = new ControladorEquipamento();
+	private ControladorFuncionario funcionarioController = new ControladorFuncionario();
+	
 
-	MenuOganizado(){
-	}
-
-	public static void exemplos(){
-		int[] DataTmp = {3, 10, 2024};
-
+	public void exemplos(LocalDate exemploDataTmp){
 		//FUNCIONARIOS FICTICIOS--------------------------------FUNCIONARIOS FICTICIOS------------------------FUNCIONARIOS FICTICIOS----------------------FUNCIONARIOS FICTICIOS
-		Funcionario TmpFun1 = new Funcionario(Funcionarios.size() + 1, "Tindo", "extelionatario", DataTmp);
-		Funcionario TmpFun4 = new Funcionario(Funcionarios.size() + 1, "Luis", "Patrão", DataTmp);
-		Funcionario TmpFun2 = new Funcionario(Funcionarios.size() + 1, "Carlos Souza", "Técnico de TI", DataTmp);
-		Funcionario TmpFun3 = new Funcionario(Funcionarios.size() + 1, "Mariana Silva", "Coordenadora", DataTmp);
-		Funcionario TmpFun = new Funcionario(Funcionarios.size() + 1, "joselindo", "Mercenario", DataTmp);
+		funcionarioController.adicionarFuncionario( "Tindo", "extelionatario", exemploDataTmp);
+		funcionarioController.adicionarFuncionario( "Luis", "Patrão", exemploDataTmp);
+		funcionarioController.adicionarFuncionario( "Carlos Souza", "Técnico de TI", exemploDataTmp);
+		funcionarioController.adicionarFuncionario( "Mariana Silva", "Coordenadora", exemploDataTmp);
+		funcionarioController.adicionarFuncionario( "joselindo", "Mercenario", exemploDataTmp);
 		
-		Equipamento TmpEquip1 = new Equipamento(Equipamentos.size() + 1, "Impressora", DataTmp, 5.5, 40, 50, "Bom");
-		Equipamento TmpEquip2 = new Equipamento(Equipamentos.size() + 1, "Monitor", DataTmp, 3.2, 60, 30, "Novo");
-		Equipamento TmpEquip3 = new Equipamento(Equipamentos.size() + 1, "Projetor", DataTmp, 2.0, 25, 15, "Novo");
-		Equipamento TmpEquip4 = new Equipamento(Equipamentos.size() + 1, "Cadeira de Escritório", DataTmp, 8.0, 60, 60, "Bom");
-		Equipamento TmpEquip = new Equipamento(Equipamentos.size() + 1, "Nootbook", DataTmp, 12, 123, 1211, "Novo");
-
-
-		
-		Funcionarios.add(TmpFun1);
-		Funcionarios.add(TmpFun2);
-		Funcionarios.add(TmpFun3);
-		Funcionarios.add(TmpFun4);
-		Funcionarios.add(TmpFun);
-
-		Equipamentos.add(TmpEquip1);		
-		Equipamentos.add(TmpEquip2);		
-		Equipamentos.add(TmpEquip3);		
-		Equipamentos.add(TmpEquip4);		
-		Equipamentos.add(TmpEquip);
+		equipamentoController.adicionarEquipamento("Impressora", exemploDataTmp, 5.5, 40, 50, "Bom");
+		equipamentoController.adicionarEquipamento( "Monitor", exemploDataTmp, 3.2, 60, 30, "Novo");
+		equipamentoController.adicionarEquipamento( "Projetor", exemploDataTmp, 2.0, 25, 15, "Novo");
+		equipamentoController.adicionarEquipamento( "Cadeira de Escritório", exemploDataTmp, 8.0, 60, 60, "Bom");
+		equipamentoController.adicionarEquipamento( "Nootbook", exemploDataTmp, 12, 123, 1211, "Novo");
 	}
 	
-	public static void main( String[] args) {
-		int[] DataTmp = {04, 10, 2024};
-		Funcionarios = new ArrayList<>();
-		Equipamentos = new ArrayList<>();
-		Emprestimos = new ArrayList<>();
+	public void menu() {
+		LocalDate exemploDataTmp = LocalDate.of(3, 10, 2024);
 		
-		MenuOganizado.exemplos();
+		exemplos(exemploDataTmp);
 
 		Scanner Leitor = new Scanner(System.in);
 		int RespostaLeitor;
@@ -84,7 +70,7 @@ public class MenuOganizado {
 
 			switch (RespostaLeitor) {
 				case 1:
-					cadastro(Leitor, DataTmp);
+					cadastro(Leitor, exemploDataTmp);
 					break;
 				case 2:
 					gerenciarDados(Leitor);
@@ -99,7 +85,7 @@ public class MenuOganizado {
 	}
 
 	// Função de cadastro de funcionário e equipamento
-	public static void  cadastro(Scanner Leitor, int[] DataTmp) {
+	public void cadastro(Scanner Leitor, LocalDate DataTmp) {
 		int RespostaLeitor;
 		do {
 			System.out.println("\033[H\033[2J");
@@ -110,16 +96,16 @@ public class MenuOganizado {
 
 			switch (RespostaLeitor) {
 				case 1:
-					cadastrarFuncionario(Leitor, DataTmp);
+					cadastrarFuncionario(Leitor);
 					break;
 				case 2:
-					cadastrarEquipamento(Leitor, DataTmp);
+					cadastrarEquipamento(Leitor);
 					break;
 			}
 		} while (RespostaLeitor <= 2);
 	}
 
-	public static void cadastrarFuncionario(Scanner Leitor, int[] DataTmp) {
+	public void cadastrarFuncionario(Scanner Leitor) {
 		System.out.println(" -----Cadastro Funcionario----- ");
 		System.out.println("Nome :");
 		String scanNome = Leitor.next();
@@ -127,20 +113,23 @@ public class MenuOganizado {
 		String scanFuncao = Leitor.next();
 		System.out.println("__Data de admissão__");
 		System.out.println("Dia :");
-		DataTmp[0] = Leitor.nextInt();
+		int DiaTmp = Leitor.nextInt();
 		System.out.println("Mês :");
-		DataTmp[1] = Leitor.nextInt();
+		int MesTmp = Leitor.nextInt();
 		System.out.println("Ano :");
-		DataTmp[2] = Leitor.nextInt();
+		int AnoTmp = Leitor.nextInt();
 
-		Funcionario TmpFuncionarios = new Funcionario(Funcionarios.size() + 1, scanNome, scanFuncao, DataTmp);
-		Funcionarios.add(TmpFuncionarios);
+		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+
+		funcionarioController.adicionarFuncionario( scanNome, scanFuncao, DataTmp);
 	}
 
-	public static void cadastrarEquipamento(Scanner Leitor, int[] DataTmp) {
+	public void cadastrarEquipamento(Scanner Leitor) {
 		System.out.println(" -----Cadastro Equipamento----- ");
 		System.out.println("Descrição :");
 		String scanDescricao = Leitor.next();
+		System.out.println("Descrição :");
+		String scanEstadoConcervacao = Leitor.next();
 		System.out.println("Peso :");
 		double scanPeso = Leitor.nextDouble();
 		System.out.println("Largura :");
@@ -149,18 +138,19 @@ public class MenuOganizado {
 		double scanComprimento = Leitor.nextDouble();
 		System.out.println("__Data de admissão__");
 		System.out.println("Dia :");
-		DataTmp[0] = Leitor.nextInt();
+		int DiaTmp = Leitor.nextInt();
 		System.out.println("Mês :");
-		DataTmp[1] = Leitor.nextInt();
+		int MesTmp = Leitor.nextInt();
 		System.out.println("Ano :");
-		DataTmp[2] = Leitor.nextInt();
+		int AnoTmp = Leitor.nextInt();
 
-		Equipamento tmpEquipamentos = new Equipamento(Equipamentos.size() + 1, scanDescricao, DataTmp, scanPeso, scanLargura, scanComprimento, "Novo");
-		Equipamentos.add(tmpEquipamentos);
+		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+
+		equipamentoController.adicionarEquipamento(scanDescricao, DataTmp, scanPeso, scanLargura, scanComprimento, scanEstadoConcervacao);
 	}
 
 	// Função para gerenciar dados de funcionários e equipamentos
-	public static void gerenciarDados(Scanner Leitor) {
+	public void gerenciarDados(Scanner Leitor) {
 		int RespostaLeitor;
 		do {
 			System.out.println("\033[H\033[2J");
@@ -181,20 +171,22 @@ public class MenuOganizado {
 		}
 		
 		// Gerenciamento de funcionarios
-		public static void gerenciarFuncionarios(Scanner Leitor) {
+		public void gerenciarFuncionarios(Scanner Leitor) {
 			System.out.println(" -----Funcionarios----- ");
 			System.out.println(" 0 - Sair");
-			for (Funcionario TmpFuncionarioF : Funcionarios) {
+			for (Funcionario TmpFuncionarioF : funcionarioController.listarFuncionarios()) {
 				System.out.println((TmpFuncionarioF.id) + " - " + TmpFuncionarioF.nome);
-		}
+			}
+			
+
 		int RespostaLeitor = Leitor.nextInt();
 		System.out.println("\033[H\033[2J");
 		
-		if (RespostaLeitor <= Funcionarios.size() && RespostaLeitor != 0) {
+		if (RespostaLeitor <= funcionarioController.listarFuncionarios().size() && RespostaLeitor != 0) {
 			String tmpNovoDado;
 			int Funcescolhido = RespostaLeitor - 1;
 			System.out.println("\033[H\033[2J");
-			System.out.println(" -----" + Funcionarios.get(Funcescolhido).nome + "----- ");
+			System.out.println(" -----" + funcionarioController.buscarPorIndexFuncionario(Funcescolhido).nome + "----- ");
 			System.out.println("0 - Expandir dados ");
 			System.out.println("1 - Alterar nome ");
 			System.out.println("2 - Alterar funcao ");
@@ -204,7 +196,7 @@ public class MenuOganizado {
 			switch (RespostaLeitor) {
 				case 0:
 					System.out.println(" ---------- ");
-					System.out.println(Funcionarios.get(Funcescolhido).toString());
+					System.out.println(funcionarioController.buscarPorIndexFuncionario(Funcescolhido).toString());
 					System.out.println("--- 0 - Sair ---");
 					Leitor.nextInt();
 					System.out.println("\033[H\033[2J");
@@ -212,28 +204,28 @@ public class MenuOganizado {
 					case 1:
 					System.out.println("Novo dado :");
 					tmpNovoDado = Leitor.next();
-					Funcionarios.get(Funcescolhido).setNome(tmpNovoDado);
+					funcionarioController.buscarPorIndexFuncionario(Funcescolhido).setNome(tmpNovoDado);
 					break;
 					case 2:
 					System.out.println("Nova função :");
 					tmpNovoDado = Leitor.next();
-					Funcionarios.get(Funcescolhido).setFuncao(tmpNovoDado);
+					funcionarioController.buscarPorIndexFuncionario(Funcescolhido).setFuncao(tmpNovoDado);
 					break;
 				}
 			}
 		}
 
 		// gerenciamento de equipamentos no total
-		public static void gerenciarEquipamentos(Scanner Leitor) {
+		public void gerenciarEquipamentos(Scanner Leitor) {
 			System.out.println(" -----Equipamentos----- ");
 			System.out.println(" 0 - Sair");
-			for (Equipamento TmpEquipamentoF : Equipamentos) {
+			for (Equipamento TmpEquipamentoF : equipamentoController.listarEquipamentos()) {
 				System.out.println((TmpEquipamentoF.id) + " - " + TmpEquipamentoF.descricao);
 			}
 			int RespostaLeitor = Leitor.nextInt();
 			System.out.println("\033[H\033[2J");
 			
-			if (RespostaLeitor <= Equipamentos.size() && RespostaLeitor != 0) {
+			if (RespostaLeitor <= equipamentoController.listarEquipamentos().size() && RespostaLeitor != 0) {
 				String tmpNovoDado;
 			int EquipamentoEscolhido = RespostaLeitor - 1;
 			System.out.println(" ---------- ");
@@ -251,8 +243,8 @@ public class MenuOganizado {
 
 			switch (RespostaLeitor) {
 				case 0:
-					System.out.println(" -----" + Equipamentos.get(EquipamentoEscolhido).descricao + "----- ");
-					System.out.println(Equipamentos.get(EquipamentoEscolhido).toString());
+					System.out.println(" -----" + equipamentoController.getEquipamentoPorIndex(EquipamentoEscolhido).descricao + "----- ");
+					System.out.println(equipamentoController.getEquipamentoPorIndex(EquipamentoEscolhido).toString());
 					System.out.println("--- 0 - Sair ---");
 					Leitor.nextInt();
 					System.out.println("\033[H\033[2J");
@@ -260,7 +252,7 @@ public class MenuOganizado {
 					case 1:
 					System.out.println("Nova descrição :");
 					tmpNovoDado = Leitor.next();
-					Equipamentos.get(EquipamentoEscolhido).setDescricao(tmpNovoDado);
+					equipamentoController.getEquipamentoPorIndex(EquipamentoEscolhido).setDescricao(tmpNovoDado);
 					break;
 					case 2:
 					System.out.println("Novo estado :");
@@ -270,18 +262,18 @@ public class MenuOganizado {
 
 					switch (RespostaLeitor) {
 						case 0:
-							Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Novo ou bom");
+							emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Novo ou bom");
 
 						break;
 
 						case 1:
-							Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Funcional");
+							emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Funcional");
 							
 							break;
 					
 						case 2:
-							Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Quebrado");
-							Emprestimos.get(RespostaLeitor).equipamento.setStatus("Quebrado");
+							emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Quebrado");
+							emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setStatus("Quebrado");
 					}
 					break;
 					case 3:
@@ -301,11 +293,11 @@ public class MenuOganizado {
 					int RespostaLeitors = Leitor.nextInt();
 					switch (RespostaLeitors) {
 						case 0:
-						Equipamentos.get(EquipamentoEscolhido).setStatus("Funcional");
+						equipamentoController.getEquipamentoPorIndex(EquipamentoEscolhido).setStatus("Funcional");
 						break;
 						
 						case 1:
-						Equipamentos.get(EquipamentoEscolhido).setStatus("Quebrado");
+						equipamentoController.getEquipamentoPorIndex(EquipamentoEscolhido).setStatus("Quebrado");
 						break;
 					}
 					break;
@@ -314,10 +306,10 @@ public class MenuOganizado {
 		}
 
 		//lista todos os items do historico
-		public static void HistoricoManutencao(int Equipamentoescolhido, Scanner Leitor){
+		public void HistoricoManutencao(int Equipamentoescolhido, Scanner Leitor){
 			int RespostaLeitor;
-			System.out.println(Equipamentos.get(Equipamentoescolhido) + " Historico ");
-			Equipamento equipTmp = Equipamentos.get(Equipamentoescolhido);
+			System.out.println(equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido) + " Historico ");
+			Equipamento equipTmp = equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido);
 			if (equipTmp.historicoManutencao.size() == 0) {
 				System.out.println("Sem Manutenções catalogadasx");
 			}
@@ -331,17 +323,17 @@ public class MenuOganizado {
 		}
 
 		//cadsatra saira para manutenção
-		public static void saidaParaManutencao(int Equipamentoescolhido, Scanner Leitor){
+		public void saidaParaManutencao(int Equipamentoescolhido, Scanner Leitor){
 			int RespostaLeitor;
 			String RespostaLeitors;
-			if (Equipamentos.get(Equipamentoescolhido).status =="Disponivel" || Equipamentos.get(Equipamentoescolhido).status =="Quebrado"){
+			if (equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).status =="Disponivel" || equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).status =="Quebrado"){
 				System.out.println("Data de retirada (dd/mm/aaaa)");
 				RespostaLeitors = Leitor.next();
-				Equipamentos.get(Equipamentoescolhido).adicionarHistoricoManutencao("Retirado para manutenção dia " + RespostaLeitors);
-				Equipamentos.get(Equipamentoescolhido).status = "Manutenção";
+				equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).adicionarHistoricoManutencao("Retirado para manutenção dia " + RespostaLeitors);
+				equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).status = "Manutenção";
 
 				System.out.println("\033[H\033[2J");
-				for (String items : Equipamentos.get(Equipamentoescolhido).historicoManutencao ) {
+				for (String items : equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).historicoManutencao ) {
 					System.err.println(items);
 				}
 			}
@@ -354,17 +346,17 @@ public class MenuOganizado {
 			RespostaLeitor = Leitor.nextInt();
 		}
 		
-		public static void retornoDeManutencao(int Equipamentoescolhido, Scanner Leitor){
+		public void retornoDeManutencao(int Equipamentoescolhido, Scanner Leitor){
 			int RespostaLeitor;
 			String RespostaLeitors;
 
-			if (Equipamentos.get(Equipamentoescolhido).status =="Manutenção"){
+			if (equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).status =="Manutenção"){
 				System.out.println("Data de retirada (dd/mm/aaaa)");
 				RespostaLeitors = Leitor.next();
-				Equipamentos.get(Equipamentoescolhido).adicionarHistoricoManutencao("Retornado de manutenção dia " + RespostaLeitors);
-				Equipamentos.get(Equipamentoescolhido).status = "Disponivel";
+				equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).adicionarHistoricoManutencao("Retornado de manutenção dia " + RespostaLeitors);
+				equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).status = "Disponivel";
 				System.out.println("\033[H\033[2J");
-				for (String items : Equipamentos.get(Equipamentoescolhido).historicoManutencao ) {
+				for (String items : equipamentoController.getEquipamentoPorIndex(Equipamentoescolhido).historicoManutencao ) {
 					System.err.println(items);
 				}
 
@@ -379,7 +371,7 @@ public class MenuOganizado {
 		}
 		
 		// Função para gerenciar empréstimos
-	public static void gerenciarEmprestimos(Scanner Leitor) {
+	public void gerenciarEmprestimos(Scanner Leitor) {
 		int RespostaLeitor;
 		do {
 			System.out.println(" -----Emprestimos----- ");
@@ -401,94 +393,95 @@ public class MenuOganizado {
 		} while (RespostaLeitor <= 3);
 	}
 
-	public static void verEmprestimos(Scanner Leitor) {
+	public void verEmprestimos(Scanner Leitor) {
 		System.out.println(" -----Lista----- ");
-		for (Emprestimo TmpEmprestimos : Emprestimos) {
+		for (Emprestimo TmpEmprestimos : emprestimoController.listarEmprestimos()) {
 			System.out.println(TmpEmprestimos.toString());
 		}
 		System.out.println("--- 0 - Sair ---");
 		Leitor.nextInt();
 	}
 
-	public static void gerarEmprestimo(Scanner Leitor) {
+	public void gerarEmprestimo(Scanner Leitor) {
 		System.out.println(" -----Novo Empréstimo----- ");
 		System.out.println("__Data do Emprestimo__");
 
-		int[] DataTmp = new int[3];
 		System.out.println("Dia :");
-		DataTmp[0] = Leitor.nextInt();
+		int DiaTmp = Leitor.nextInt();
 		System.out.println("Mês :");
-		DataTmp[1] = Leitor.nextInt();
+		int MesTmp = Leitor.nextInt();
 		System.out.println("Ano :");
-		DataTmp[2] = Leitor.nextInt();
+		int AnoTmp = Leitor.nextInt();
 
+		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+		
 		System.out.println("Funcionários disponíveis:");
-		for (Funcionario tmpFuncionario : Funcionarios) {
+		for (Funcionario tmpFuncionario : funcionarioController.listarFuncionarios()) {
 			System.out.println(tmpFuncionario.id + " - " + tmpFuncionario.nome);
 		}
 		System.out.println("Escolha um funcionário pelo ID:");
 		int idFuncionario = Leitor.nextInt();
-		Funcionario tmpFuncionario = Funcionarios.get(idFuncionario - 1);
+		Funcionario tmpFuncionario = funcionarioController.buscarPorIndexFuncionario(idFuncionario - 1);
 
 		System.out.println("Equipamentos disponíveis:");
-		for (Equipamento tmpEquipamento : Equipamentos) {
+		for (Equipamento tmpEquipamento : equipamentoController.listarEquipamentos()) {
 			if (tmpEquipamento.status != "Emprestado" &&  tmpEquipamento.status != "Manutenção" &&  tmpEquipamento.status != "Quebrado" )
 				System.out.println(tmpEquipamento.id + " - " + tmpEquipamento.descricao);
 		}
 		System.out.println("Escolha um equipamento pelo ID:");
 
 		int idEquipamento = Leitor.nextInt();
-		Equipamento tmpEquipamento = Equipamentos.get(idEquipamento - 1);
+		Equipamento tmpEquipamento = equipamentoController.getEquipamentoPorIndex(idEquipamento - 1);
 
-		Equipamentos.get(idEquipamento).setStatus("Emprestado");
+		equipamentoController.getEquipamentoPorIndex(idEquipamento).setStatus("Emprestado");
 
 
 		System.out.println("Data hora prevista de retorno:");
-		int[] DataTmp1 = new int[3];
 		System.out.println("Dia :");
-		DataTmp1[0] = Leitor.nextInt();
+		int DiaTmp1 = Leitor.nextInt();
 		System.out.println("Mês :");
-		DataTmp1[1] = Leitor.nextInt();
+		int MesTmp1 = Leitor.nextInt();
 		System.out.println("Ano :");
-		DataTmp1[2] = Leitor.nextInt();
+		int AnoTmp1 = Leitor.nextInt();
+
+		LocalDate DataTmp1 = LocalDate.of(DiaTmp1, MesTmp1, AnoTmp1);
 
 		System.out.println("Observações:");
 		String observacoes = Leitor.next();
 
-		Emprestimo novoEmprestimo = new Emprestimo(DataTmp, tmpFuncionario, tmpEquipamento, observacoes, DataTmp1);
-		novoEmprestimo.setStatus("A Retornar");
-		Emprestimos.add(novoEmprestimo);
-		System.out.println("Empréstimo gerado com sucesso!");
+		emprestimoController.adicionarEmprestimo(DataTmp, tmpFuncionario, tmpEquipamento, observacoes, DataTmp1);
 	}
 
-	//ADICIIONANDO RETORNO A LISTA DO EQUIPAMENTO
-	public static void validarRetorno(Scanner Leitor) {
+	//ADICIIONANDO RETORNO A LISTA DO EQUIPAMENTOx
+	public void validarRetorno(Scanner Leitor) {
 		int RespostaLeitor;
 		String RespostaLeitorS;
 		System.out.println(" -----Validar Retorno----- ");
-		for (Emprestimo TmpEmprestimos : Emprestimos) {
+		for (Emprestimo TmpEmprestimos : emprestimoController.listarEmprestimos()) {
 			if (TmpEmprestimos.status != "Retornado")
-				System.out.println(Emprestimos.indexOf(TmpEmprestimos) + " --"+TmpEmprestimos.equipamento.descricao+" para "+TmpEmprestimos.funcionario.nome);
+				System.out.println(emprestimoController.listarEmprestimos().indexOf(TmpEmprestimos) + " --"+TmpEmprestimos.equipamento.descricao+" para "+TmpEmprestimos.funcionario.nome);
 		}
 		System.out.println("--- Selecione o emprestimo ---");
 		RespostaLeitor = Leitor.nextInt();
 		System.out.println("\033[H\033[2J");
 
-		if (Emprestimos.get(RespostaLeitor).status != "Retornado")
-			System.out.println(Emprestimos.get(RespostaLeitor).toString());
-			Emprestimos.get(RespostaLeitor).toString();
+		if (emprestimoController.getEmprestimoPorIndex(RespostaLeitor).status != "Retornado")
+			System.out.println(emprestimoController.getEmprestimoPorIndex(RespostaLeitor).toString());
+			emprestimoController.getEmprestimoPorIndex(RespostaLeitor).toString();
 			System.out.println("--- Confirmar ? (Sim = 0,Não = 1) ---");
 			RespostaLeitor = Leitor.nextInt();
 			if (RespostaLeitor == 0) {
 				System.out.println("\033[H\033[2J");
+				
 				System.out.println("Data hora do retorno:");
-				int[] DataTmp1 = new int[3];
-				System.out.println("Dia :");
-				DataTmp1[0] = Leitor.nextInt();
+				System.out.println("Dia :");				
+				int DiaTmp1 = Leitor.nextInt();
 				System.out.println("Mês :");
-				DataTmp1[1] = Leitor.nextInt();
+				int MesTmp1 = Leitor.nextInt();
 				System.out.println("Ano :");
-				DataTmp1[2] = Leitor.nextInt();
+				int AnoTmp1 = Leitor.nextInt();
+				
+				LocalDate DataTmp1 = LocalDate.of(DiaTmp1, MesTmp1, AnoTmp1);
 
 				System.out.println("estado devolvido do equipamento :");
 				System.out.println("Novo ou bom - 0 \n Funcional - 1 \n Quebrado - 2");
@@ -496,18 +489,18 @@ public class MenuOganizado {
 
 				switch (RespostaLeitor) {
 					case 0:
-						Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Novo ou bom");
+						emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Novo ou bom");
 
 					break;
 
 					case 1:
-						Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Funcional");
+						emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Funcional");
 						
 						break;
 				
 					case 2:
-						Emprestimos.get(RespostaLeitor).equipamento.setEstadoConservacao("Quebrado");
-						Emprestimos.get(RespostaLeitor).equipamento.setStatus("Quebrado");
+						emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setEstadoConservacao("Quebrado");
+						emprestimoController.getEmprestimoPorIndex(RespostaLeitor).equipamento.setStatus("Quebrado");
 				}
 
 
@@ -515,7 +508,7 @@ public class MenuOganizado {
 				RespostaLeitorS = Leitor.nextLine();
 				
 				
-				Emprestimos.get(RespostaLeitor).confirmarRetorno(DataTmp1,RespostaLeitorS);
+				emprestimoController.getEmprestimoPorIndex(RespostaLeitor).confirmarRetorno(DataTmp1,RespostaLeitorS);
 				
 			}
 		System.out.println("\033[H\033[2J");

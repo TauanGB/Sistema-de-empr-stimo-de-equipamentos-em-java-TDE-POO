@@ -1,13 +1,17 @@
+package modelo;
+
+import java.time.LocalDate;
+
 public class Emprestimo {
-	private int[] dataHoraSaida;
-	private int[] dataHoraRetorno;
+	private LocalDate dataHoraSaida;
+	private LocalDate dataHoraRetorno;
 	public Funcionario funcionario;
 	public Equipamento equipamento;
 	public String status;
 	private String observacoes;
 
-	public Emprestimo(int[] dataHoraSaida, Funcionario funcionario, 
-					  Equipamento equipamento, String observacoes,int[] dataHoraRetorno) {
+	public Emprestimo(LocalDate dataHoraSaida, Funcionario funcionario, 
+					  Equipamento equipamento, String observacoes,LocalDate dataHoraRetorno) {
 		this.dataHoraSaida = dataHoraSaida;
 		this.funcionario = funcionario;
 		this.equipamento = equipamento;
@@ -19,7 +23,11 @@ public class Emprestimo {
 		this.status = status;
 	}
 	
-	public void confirmarRetorno(int[] dataHoraRetorno,String obs) {
+	public void getStatus(String status) {
+		this.status = status;
+	}
+	
+	public void confirmarRetorno(LocalDate dataHoraRetorno,String obs) {
 		this.status = "Retornado";
 		this.dataHoraRetorno = dataHoraRetorno;
 	}
@@ -39,8 +47,8 @@ public class Emprestimo {
 	@Override
 	public String toString() {
 		return "------Empréstimo------" +
-				"\n data Hora de Saida = " + dataHoraSaida[0] + "/" + dataHoraSaida[1]  +"/" + dataHoraSaida[2] +
-				"\n data Hora de Retorno = " + dataHoraRetorno[0] + "/" + dataHoraRetorno[1]  +"/" + dataHoraRetorno[2] +
+				"\n data Hora de Saida = " + dataHoraSaida +
+				"\n data Hora de Retorno = " + dataHoraRetorno +
 				"\n Funcionario: " + funcionario +
 				"\n Equipamento: " + equipamento +
 				"\n observacoes =  " + observacoes;

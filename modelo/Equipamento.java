@@ -1,17 +1,20 @@
+package modelo;
+
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class Equipamento {
 	public int id;
 	public String descricao;
 	public String status;
-	private int[] dataCompra;
+	private LocalDate dataCompra;
 	private double peso;
 	private double largura;
 	private double comprimento;
 	public ArrayList<String> historicoManutencao;
 	public String estadoConservacao;
 
-	public Equipamento(int id, String descricao, int[] dataCompra, double peso, 
+	public Equipamento(int id, String descricao, LocalDate dataCompra, double peso, 
 					   double largura, double comprimento, String estadoConservacao) {
 		this.id = id;
 		this.status = "Disponivel";
@@ -41,6 +44,10 @@ public class Equipamento {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
 
 	public void adicionarHistoricoManutencao(String descricaoManutencao) {
 		historicoManutencao.add(descricaoManutencao);
@@ -52,7 +59,7 @@ public class Equipamento {
 				"\n id =" + id + 
 				"\n Estatus = " + status +
 				"\n descricao = " + descricao +
-				"\n dataCompra = " + dataCompra[0] + "/" + dataCompra[1]  +"/" + dataCompra[2] +
+				"\n dataCompra = " + this.dataCompra +
 				"\n peso = " + peso +
 				"\n largura = " + largura +
 				"\n comprimento = " + comprimento +

@@ -1,10 +1,13 @@
+package modelo;
+import java.time.LocalDate;
+
 public class Funcionario {
 	public int id;
 	public String nome;
 	private String funcao;
-	private int[] dataAdmissao;
+	private LocalDate dataAdmissao;
 
-	public Funcionario(int id, String nome, String funcao, int[] dataAdmissao) {
+	public Funcionario(int id, String nome, String funcao, LocalDate dataAdmissao) {
 		this.id = id;
 		this.nome = nome;
 		this.funcao = funcao;
@@ -31,6 +34,6 @@ public class Funcionario {
 				"\n id = " + id +
 				"\n n nome = " + nome +
 				"\n funcao = " + funcao +
-				"\n dataAdmissao = " + dataAdmissao[0] + "/" + dataAdmissao[1]  +"/" + dataAdmissao[2]+"\n";
+				"\n dataAdmissao = " + dataAdmissao;
 	}
 }
