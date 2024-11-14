@@ -1,6 +1,8 @@
 package vizualizacao;
 //A TrackBug decidiu convidar os estudantes de Programação Orientada a Objetos para desenvolver uma solução digital em Java para o controle de empréstimos. No entanto, algumas especificações devem ser seguidas:
 
+import java.util.List;
+
 //1 - O projeto deve ser desenvolvido seguindo os princípios de orientação a objetos em sua totalidade.
 
 //2 - Os equipamentos devem conter os seguintes dados: código,
@@ -29,6 +31,12 @@ import controlador.ControladorFuncionario;
 import modelo.Emprestimo;
 import modelo.Equipamento;
 import modelo.Funcionario;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 
 public class MenuOganizado {
@@ -36,26 +44,9 @@ public class MenuOganizado {
 	private ControladorEquipamento equipamentoController = new ControladorEquipamento();
 	private ControladorFuncionario funcionarioController = new ControladorFuncionario();
 	
-
-	public void exemplos(LocalDate exemploDataTmp){
-		//FUNCIONARIOS FICTICIOS--------------------------------FUNCIONARIOS FICTICIOS------------------------FUNCIONARIOS FICTICIOS----------------------FUNCIONARIOS FICTICIOS
-		funcionarioController.adicionarFuncionario( "Tindo", "extelionatario", exemploDataTmp);
-		funcionarioController.adicionarFuncionario( "Luis", "Patrão", exemploDataTmp);
-		funcionarioController.adicionarFuncionario( "Carlos Souza", "Técnico de TI", exemploDataTmp);
-		funcionarioController.adicionarFuncionario( "Mariana Silva", "Coordenadora", exemploDataTmp);
-		funcionarioController.adicionarFuncionario( "joselindo", "Mercenario", exemploDataTmp);
-		
-		equipamentoController.adicionarEquipamento("Impressora", exemploDataTmp, 5.5, 40, 50, "Bom");
-		equipamentoController.adicionarEquipamento( "Monitor", exemploDataTmp, 3.2, 60, 30, "Novo");
-		equipamentoController.adicionarEquipamento( "Projetor", exemploDataTmp, 2.0, 25, 15, "Novo");
-		equipamentoController.adicionarEquipamento( "Cadeira de Escritório", exemploDataTmp, 8.0, 60, 60, "Bom");
-		equipamentoController.adicionarEquipamento( "Nootbook", exemploDataTmp, 12, 123, 1211, "Novo");
-	}
-	
 	public void menu() {
-		LocalDate exemploDataTmp = LocalDate.of(3, 10, 2024);
+		carregarDadosDeSer();
 		
-		exemplos(exemploDataTmp);
 
 		Scanner Leitor = new Scanner(System.in);
 		int RespostaLeitor;
@@ -63,14 +54,14 @@ public class MenuOganizado {
 		do {
 			System.out.println("\033[H\033[2J");
 			System.out.println(" -----Interface----- ");
-			System.out.println(" 1 - Cadastro \n 2 - Gerenciar Dados \n 3 - Emprestimo \n 4 - Sair ");
+			System.out.println(" 1 - Cadastro \n 2 - Gerenciar Dados \n 3 - Emprestimo \n 4 - Gerar RelatorioGeral \n 5 - Sair");
 
 			RespostaLeitor = Leitor.nextInt();
 			System.out.println("\033[H\033[2J");
 
 			switch (RespostaLeitor) {
 				case 1:
-					cadastro(Leitor, exemploDataTmp);
+					cadastro(Leitor);
 					break;
 				case 2:
 					gerenciarDados(Leitor);
@@ -78,14 +69,65 @@ public class MenuOganizado {
 				case 3:
 					gerenciarEmprestimos(Leitor);
 					break;
+				case 4:
+					gerarRelatorioGeral();
+					break;
 			}
 
-		} while (RespostaLeitor < 4);
+			salvarDadosEmSer();
+		} while (RespostaLeitor < 5);
 		Leitor.close();
 	}
 
+	public void carregarDadosDeSer() {
+		try (FileInputStream fis = new FileInputStream("Dados.ser");
+			 ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+			// Lê cada lista do arquivo
+			funcionarioController.carregarDados((List<Funcionario>) ois.readObject());
+			equipamentoController.carregarDados((List<Equipamento>) ois.readObject());
+			emprestimoController.carregarDados((List<Emprestimo>) ois.readObject());
+
+			System.out.println("Dados carregados com sucesso de " + "Dados.ser");
+		} catch (IOException | ClassNotFoundException e) {
+			System.err.println("Erro ao carregar os dados: " + e.getMessage());
+		}
+	}
+
+	public void salvarDadosEmSer() {
+		try (FileOutputStream fos = new FileOutputStream("Dados.ser");
+			 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+			
+			List<Funcionario> funcionarios = funcionarioController.listarFuncionarios();
+
+
+
+			// Escreve cada lista no arquivo
+			oos.writeObject(funcionarios);
+			oos.writeObject(equipamentoController.listarEquipamentos());
+			oos.writeObject(emprestimoController.listarEmprestimos());
+
+		} catch (IOException e) {
+			System.err.println("Erro ao salvar os dados: " + e.getMessage());
+		}
+	}
+
+	public void gerarRelatorioGeral() {
+		System.out.println(" -----Relatório Geral do Sistema----- ");
+		System.out.println("Equipamentos:");
+		equipamentoController.listarEquipamentos().forEach(System.out::println);
+		
+		System.out.println("Funcionários:");
+		funcionarioController.listarFuncionarios().forEach(System.out::println);
+	
+		System.out.println("Resumo de Empréstimos:");
+		emprestimoController.listarEmprestimos().forEach(System.out::println);
+	}
+	
+	
+
 	// Função de cadastro de funcionário e equipamento
-	public void cadastro(Scanner Leitor, LocalDate DataTmp) {
+	public void cadastro(Scanner Leitor) {
 		int RespostaLeitor;
 		do {
 			System.out.println("\033[H\033[2J");
@@ -119,9 +161,10 @@ public class MenuOganizado {
 		System.out.println("Ano :");
 		int AnoTmp = Leitor.nextInt();
 
-		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+		LocalDate DataTmp = LocalDate.of(AnoTmp, MesTmp, DiaTmp);
 
 		funcionarioController.adicionarFuncionario( scanNome, scanFuncao, DataTmp);
+		salvarDadosEmSer();
 	}
 
 	public void cadastrarEquipamento(Scanner Leitor) {
@@ -144,9 +187,10 @@ public class MenuOganizado {
 		System.out.println("Ano :");
 		int AnoTmp = Leitor.nextInt();
 
-		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+		LocalDate DataTmp = LocalDate.of(AnoTmp, MesTmp, DiaTmp);
 
 		equipamentoController.adicionarEquipamento(scanDescricao, DataTmp, scanPeso, scanLargura, scanComprimento, scanEstadoConcervacao);
+		salvarDadosEmSer();
 	}
 
 	// Função para gerenciar dados de funcionários e equipamentos
@@ -413,7 +457,7 @@ public class MenuOganizado {
 		System.out.println("Ano :");
 		int AnoTmp = Leitor.nextInt();
 
-		LocalDate DataTmp = LocalDate.of(DiaTmp, MesTmp, AnoTmp);
+		LocalDate DataTmp = LocalDate.of(AnoTmp, MesTmp, DiaTmp);
 		
 		System.out.println("Funcionários disponíveis:");
 		for (Funcionario tmpFuncionario : funcionarioController.listarFuncionarios()) {
@@ -444,7 +488,7 @@ public class MenuOganizado {
 		System.out.println("Ano :");
 		int AnoTmp1 = Leitor.nextInt();
 
-		LocalDate DataTmp1 = LocalDate.of(DiaTmp1, MesTmp1, AnoTmp1);
+		LocalDate DataTmp1 = LocalDate.of(AnoTmp1, MesTmp1,DiaTmp1);
 
 		System.out.println("Observações:");
 		String observacoes = Leitor.next();
@@ -481,7 +525,7 @@ public class MenuOganizado {
 				System.out.println("Ano :");
 				int AnoTmp1 = Leitor.nextInt();
 				
-				LocalDate DataTmp1 = LocalDate.of(DiaTmp1, MesTmp1, AnoTmp1);
+				LocalDate DataTmp1 = LocalDate.of(AnoTmp1, MesTmp1,DiaTmp1);
 
 				System.out.println("estado devolvido do equipamento :");
 				System.out.println("Novo ou bom - 0 \n Funcional - 1 \n Quebrado - 2");

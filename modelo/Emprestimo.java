@@ -1,8 +1,10 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Emprestimo {
+public class Emprestimo implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private LocalDate dataHoraSaida;
 	private LocalDate dataHoraRetorno;
 	public Funcionario funcionario;

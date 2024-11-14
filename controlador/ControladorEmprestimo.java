@@ -17,6 +17,11 @@ public class ControladorEmprestimo {
 
     }
 
+	public void carregarDados(List<Emprestimo> emprestimosNovo) {
+		emprestimos = emprestimosNovo;
+	}
+
+
     // Deletar um empréstimo pelo INDEX
     public void deletarEmprestimo(int index) {
         emprestimos.remove(emprestimos.get(index));

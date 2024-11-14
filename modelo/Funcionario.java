@@ -1,7 +1,9 @@
 package modelo;
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Funcionario {
+public class Funcionario implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public int id;
 	public String nome;
 	private String funcao;

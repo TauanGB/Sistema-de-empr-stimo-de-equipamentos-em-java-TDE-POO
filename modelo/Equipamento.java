@@ -1,9 +1,11 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Equipamento {
+public class Equipamento implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public int id;
 	public String descricao;
 	public String status;

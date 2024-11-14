@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Equipamento;
+import modelo.Funcionario;
 
 public class ControladorEquipamento {
     private List<Equipamento> equipamentos = new ArrayList<>();
@@ -14,6 +15,10 @@ public class ControladorEquipamento {
 		Equipamento equipamento = new Equipamento(equipamentos.size()+1, descricao, dataCompra, peso, largura, comprimento, estadoConservacao);
         equipamentos.add(equipamento);
     }
+
+	public void carregarDados(List<Equipamento> equipamentosNovo) {
+		equipamentos = equipamentosNovo;
+	}
 
     // Deletar um equipamento pelo ID
     public void deletarEquipamento(int id) {

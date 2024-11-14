@@ -14,6 +14,10 @@ public class ControladorFuncionario {
         funcionarios.add(funcionario);
     }
 
+	public void carregarDados(List<Funcionario> funcionariosNovo) {
+		funcionarios = funcionariosNovo;
+	}
+
     // Deletar um funcionário pelo ID
     public void deletarFuncionario(int id) {
         funcionarios.removeIf(f -> f.getId() == id);
